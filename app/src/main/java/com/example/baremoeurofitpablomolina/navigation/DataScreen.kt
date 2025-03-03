@@ -35,7 +35,7 @@ fun DataScreen(navigateToRecicler: () -> Unit) {
         modifier = Modifier.fillMaxSize(), // Ocupa todo el tamaño disponible
         horizontalAlignment = Alignment.CenterHorizontally // Centra los elementos horizontalmente
     ) {
-        Spacer(modifier = Modifier.weight(1f)) // Espaciador flexible en la parte superior
+        Spacer(modifier = Modifier.weight(1f)) // Espaciador en la parte superior
         Text(text = "Datos ", fontSize = 25.sp) // Título principal
         Spacer(modifier = Modifier.weight(0.2f)) // Espaciador entre los elementos
         Text(text = "Edad ", fontSize = 15.sp) // Etiqueta para el campo de edad
