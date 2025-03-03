@@ -41,7 +41,6 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ReciclerViewScreen(navController: NavController) {
-    val context = LocalContext.current
     val pruebas = getPruebas()
 
     val pruebasPorCategoria: Map<Categoria, List<Pruebas>> = Categoria.values().associateWith { categoria ->
@@ -50,7 +49,7 @@ fun ReciclerViewScreen(navController: NavController) {
 
     LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         pruebasPorCategoria.forEach { (categoria, pruebas) ->
-            if (pruebas.isNotEmpty()) { // Evitar mostrar categorías sin pruebas
+            if (pruebas.isNotEmpty()) {
                 stickyHeader {
                     Text(
                         text = categoria.name,
@@ -58,7 +57,7 @@ fun ReciclerViewScreen(navController: NavController) {
                             .fillMaxWidth()
                             .background(Color.Green),
                         color = Color.White,
-                        fontSize = 16.sp
+                        fontSize = 26.sp
                     )
                 }
                 items(pruebas) { prueba ->
@@ -69,22 +68,6 @@ fun ReciclerViewScreen(navController: NavController) {
             }
         }
     }
-}
-
-
-@Composable
-fun PruebasGridView() {
-    val context = LocalContext.current
-    LazyVerticalGrid(
-        modifier = Modifier.padding(8.dp),
-        columns = GridCells.Fixed(2),
-        content = {
-            items(getPruebas()) { prueba ->
-                ItemPrueba(pruebas = prueba) {
-                    Toast.makeText(context, it.name, Toast.LENGTH_SHORT).show()
-                }
-            }
-        })
 }
 
 @Composable

@@ -1,7 +1,5 @@
 package com.example.baremoeurofitpablomolina.navigation
 
-import android.content.Context
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -20,18 +18,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.state.ToggleableState
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen(navigateToRecicler: () -> Unit) {
-    var edad by remember { mutableStateOf("0") }
-    var peso by remember { mutableStateOf("0") }
-    var altura by remember { mutableStateOf("0") }
+    var edad by remember { mutableStateOf("") }
+    var peso by remember { mutableStateOf("") }
+    var altura by remember { mutableStateOf("") }
     var option1 by rememberSaveable { mutableStateOf(ToggleableState.Off) }
     var option2 by rememberSaveable { mutableStateOf(ToggleableState.On) }
     Column(
@@ -81,7 +75,19 @@ fun HomeScreen(navigateToRecicler: () -> Unit) {
             Text(text = "Confirmar")
         }
         Row {
-            MyIMC("IMC",altura = altura.toDouble(),peso = peso.toInt())
+            var enviarAltura = 0.0
+            var enviarPeso = 0
+            if (altura != "") {
+                enviarAltura = altura.toDouble()
+            } else {
+                enviarAltura = 0.0
+            }
+            if (peso != "") {
+                enviarPeso = peso.toInt()
+            } else {
+                enviarPeso = 0
+            }
+            MyIMC("IMC", altura = enviarAltura, peso = enviarPeso)
             Button(onClick = {}) {
                 Text(text = "Ver Notas")
             }
@@ -90,14 +96,8 @@ fun HomeScreen(navigateToRecicler: () -> Unit) {
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun previewHome() {
-    HomeScreen { }
-}
-
-@Composable
-fun MyIMC(texto: String,altura:Double,peso:Int) {
+fun MyIMC(texto: String, altura: Double, peso: Int) {
     var showDialog by remember { mutableStateOf(false) }
     fun showDialogOnClick() {
         showDialog = true

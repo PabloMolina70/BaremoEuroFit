@@ -6,7 +6,7 @@ data class Pruebas(
     val name: String,
     val descripcion: String,
     val imagen: Int,
-    val categorias: List<Categoria> // Ahora puede tener varias categorías
+    val categorias: List<Categoria>,
 )
 
 
