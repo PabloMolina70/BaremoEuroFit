@@ -8,7 +8,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.baremoeurofitpablomolina.navigation.MyDialog
+import com.example.baremoeurofitpablomolina.navigation.MyScreen
 import com.example.baremoeurofitpablomolina.navigation.NavigationWrape
+import com.example.baremoeurofitpablomolina.navigation.PruebasGridView
+import com.example.baremoeurofitpablomolina.navigation.PruebasStickyView
+import com.example.baremoeurofitpablomolina.navigation.PruebasWithSpecialControl
 import com.example.baremoeurofitpablomolina.ui.theme.BaremoEuroFitPabloMolinaTheme
 
 class MainActivity : ComponentActivity() {
@@ -18,21 +23,5 @@ class MainActivity : ComponentActivity() {
         setContent {
             NavigationWrape()
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    BaremoEuroFitPabloMolinaTheme {
-        Greeting("Android")
     }
 }
