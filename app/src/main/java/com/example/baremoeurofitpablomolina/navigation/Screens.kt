@@ -9,4 +9,7 @@ object Login
 object Home
 
 @Serializable
+object Recicler
+
+@Serializable
 data class Detail(val name: String)

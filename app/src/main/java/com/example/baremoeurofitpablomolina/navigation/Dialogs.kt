@@ -16,7 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-fun MyDialog(show: Boolean, onDismiss: () -> Unit, onConfirm: () -> Unit){
+fun MyDialog(show: Boolean, onDismiss: () -> Unit, onConfirm: () -> Unit,altura:Double,peso:Int){
     if(show){
         AlertDialog(
             onDismissRequest = {onDismiss()},
@@ -31,40 +31,7 @@ fun MyDialog(show: Boolean, onDismiss: () -> Unit, onConfirm: () -> Unit){
                 }
             },
             title = { Text(text = "IMC") },
-            text = { Text(text = "Tu IMC es") }
-        )
-    }
-}
-
-@Composable
-fun MyScreen() {
-    var showDialog by remember { mutableStateOf(false) }
-
-    fun showDialogOnClick() {
-        showDialog = true
-    }
-
-    fun dismissDialog() {
-        showDialog = false
-    }
-
-    fun confirmDialog() {
-        showDialog = false
-    }
-
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Button(onClick = { showDialogOnClick() }) {
-            Text(text = "Mostrar Diálogo")
-        }
-
-        MyDialog(
-            show = showDialog,
-            onDismiss = { dismissDialog() },
-            onConfirm = { confirmDialog() }
+            text = { Text(text = "Tu IMC es "+(peso/(altura*altura))) }
         )
     }
 }

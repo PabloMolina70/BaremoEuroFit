@@ -1,5 +1,7 @@
 package com.example.baremoeurofitpablomolina.navigation
 
+import android.content.Context
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,10 +23,15 @@ import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
-fun HomeScreen(navigateToDetail: (String) -> Unit) {
-    var text by remember { mutableStateOf("") }
+fun HomeScreen(navigateToRecicler: () -> Unit) {
+    var edad by remember { mutableStateOf("0") }
+    var peso by remember { mutableStateOf("0") }
+    var altura by remember { mutableStateOf("0") }
     var option1 by rememberSaveable { mutableStateOf(ToggleableState.Off) }
     var option2 by rememberSaveable { mutableStateOf(ToggleableState.On) }
     Column(
@@ -35,13 +42,13 @@ fun HomeScreen(navigateToDetail: (String) -> Unit) {
         Text(text = "Datos ", fontSize = 25.sp)
         Spacer(modifier = Modifier.weight(0.2f))
         Text(text = "Edad ", fontSize = 15.sp)
-        TextField(value = text, onValueChange = { text = it })
+        TextField(value = edad, onValueChange = { edad = it })
         Spacer(modifier = Modifier.weight(0.2f))
         Text(text = "Peso ", fontSize = 15.sp)
-        TextField(value = text, onValueChange = { text = it })
+        TextField(value = peso, onValueChange = { peso = it })
         Spacer(modifier = Modifier.weight(0.2f))
         Text(text = "Altura ", fontSize = 15.sp)
-        TextField(value = text, onValueChange = { text = it })
+        TextField(value = altura, onValueChange = { altura = it })
         Spacer(modifier = Modifier.weight(0.2f))
         Row(Modifier.padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
             TriStateCheckbox(state = option1, onClick = {
@@ -70,14 +77,12 @@ fun HomeScreen(navigateToDetail: (String) -> Unit) {
             })
             Text(text = "Chica")
         }
-        Button(onClick = {navigateToDetail(text)}) {
+        Button(onClick = { navigateToRecicler() }) {
             Text(text = "Confirmar")
         }
         Row {
-            Button(onClick = {navigateToDetail(text)}) {
-                Text(text = "IMC")
-            }
-            Button(onClick = {navigateToDetail(text)}) {
+            MyIMC("IMC",altura = altura.toDouble(),peso = peso.toInt())
+            Button(onClick = {}) {
                 Text(text = "Ver Notas")
             }
         }
@@ -87,7 +92,35 @@ fun HomeScreen(navigateToDetail: (String) -> Unit) {
 
 @Preview(showBackground = true)
 @Composable
-fun previewHome(){
-    HomeScreen {  }
+fun previewHome() {
+    HomeScreen { }
+}
+
+@Composable
+fun MyIMC(texto: String,altura:Double,peso:Int) {
+    var showDialog by remember { mutableStateOf(false) }
+    fun showDialogOnClick() {
+        showDialog = true
+    }
+
+    fun dismissDialog() {
+        showDialog = false
+    }
+
+    fun confirmDialog() {
+        showDialog = false
+    }
+    Button(onClick = { showDialogOnClick() }) {
+        Text(text = texto)
+    }
+
+    MyDialog(
+        show = showDialog,
+        onDismiss = { dismissDialog() },
+        onConfirm = { confirmDialog() },
+        altura = altura,
+        peso = peso
+    )
+
 }
 

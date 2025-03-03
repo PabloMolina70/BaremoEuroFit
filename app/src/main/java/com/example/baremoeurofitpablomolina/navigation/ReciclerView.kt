@@ -1,5 +1,6 @@
 package com.example.baremoeurofitpablomolina.navigation
 
+import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -33,75 +34,43 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.baremoeurofitpablomolina.R
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun PruebasStickyView() {
+fun ReciclerViewScreen(navController: NavController) {
     val context = LocalContext.current
+    val pruebas = getPruebas()
 
-    val superhero: Map<String, List<Pruebas>> = getPruebas().groupBy { it.Name }
+    val pruebasPorCategoria: Map<Categoria, List<Pruebas>> = Categoria.values().associateWith { categoria ->
+        pruebas.filter { it.categorias.contains(categoria) }
+    }
 
     LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        superhero.forEach { (name, pruebas) ->
-            stickyHeader {
-                Text(
-                    text = name,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Color.Green),
-                    color = Color.White,
-                    fontSize = 16.sp
-                )
-            }
-            items(pruebas) { prueba ->
-                ItemPrueba(pruebas = prueba) {
-                    Toast.makeText(context, it.Name, Toast.LENGTH_SHORT).show()
+        pruebasPorCategoria.forEach { (categoria, pruebas) ->
+            if (pruebas.isNotEmpty()) { // Evitar mostrar categorías sin pruebas
+                stickyHeader {
+                    Text(
+                        text = categoria.name,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(Color.Green),
+                        color = Color.White,
+                        fontSize = 16.sp
+                    )
+                }
+                items(pruebas) { prueba ->
+                    ItemPrueba(pruebas = prueba) {
+                        navController.navigate("detalle/${Uri.encode(prueba.name)}")
+                    }
                 }
             }
         }
     }
 }
 
-@Composable
-fun PruebasWithSpecialControl() {
-    val context = LocalContext.current
-    val rvState = rememberLazyListState()
-    val corutineScope = rememberCoroutineScope()
-    Column() {
-        LazyColumn(
-            state = rvState,
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.weight(1f)
-        ) {
-            items(getPruebas()) { prueba ->
-                ItemPrueba(pruebas = prueba) {
-                    Toast.makeText(context, it.Name, Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-        val showButton by remember {
-            derivedStateOf {
-                rvState.firstVisibleItemIndex > 0
-            }
-        }
-        if (showButton) {
-            Button(
-                onClick = {
-                    corutineScope.launch {
-                        rvState.animateScrollToItem(0)
-                    }
-                },
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(16.dp)
-            ) {
-                Text(text = "Soy un boton cool")
-            }
-        }
-    }
-}
 
 @Composable
 fun PruebasGridView() {
@@ -112,22 +81,10 @@ fun PruebasGridView() {
         content = {
             items(getPruebas()) { prueba ->
                 ItemPrueba(pruebas = prueba) {
-                    Toast.makeText(context, it.Name, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, it.name, Toast.LENGTH_SHORT).show()
                 }
             }
         })
-}
-
-@Composable
-fun PruebaView() {
-    val context = LocalContext.current
-    LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        items(getPruebas()) { prueba ->
-            ItemPrueba(pruebas = prueba) {
-                Toast.makeText(context, it.Name, Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
 }
 
 @Composable
@@ -140,17 +97,17 @@ fun ItemPrueba(pruebas: Pruebas, onItemSelected: (Pruebas) -> Unit) {
     {
         Column() {
             Image(
-                painter = painterResource(id = pruebas.photo),
+                painter = painterResource(id = pruebas.imagen),
                 contentDescription = "SuperHero Avatar",
                 modifier = Modifier.fillMaxWidth(),
                 contentScale = ContentScale.Crop
             )
             Text(
-                text = pruebas.Name,
+                text = pruebas.name,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
             Text(
-                text = pruebas.Enlace,
+                text = pruebas.descripcion,
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 fontSize = 12.sp
             )
@@ -160,10 +117,10 @@ fun ItemPrueba(pruebas: Pruebas, onItemSelected: (Pruebas) -> Unit) {
 
 fun getPruebas(): List<Pruebas> {
     return listOf(
-        Pruebas("Abdominales", "", R.drawable.abdominales),
-        Pruebas("Flexibilidad", "", R.drawable.flexibilidad),
-        Pruebas("Test Cooper", "", R.drawable.testdecooper),
-        Pruebas("Velocidad 5 x 10", "", R.drawable.p5x10),
-        Pruebas("Lanzar Balon", "", R.drawable.balon)
+        Pruebas("Abdominales", "", R.drawable.abdominales, listOf(Categoria.FUERZA, Categoria.RESISTENCIA)),
+        Pruebas("Flexibilidad", "", R.drawable.flexibilidad, listOf(Categoria.FLEXIBILIDAD)),
+        Pruebas("Test Cooper", "", R.drawable.testdecooper, listOf(Categoria.RESISTENCIA, Categoria.VELOCIDAD)),
+        Pruebas("Velocidad 5 x 10", "", R.drawable.p5x10, listOf(Categoria.VELOCIDAD, Categoria.AGILIDAD)),
+        Pruebas("Lanzar Balón", "", R.drawable.balon, listOf(Categoria.COORDINACION, Categoria.FUERZA))
     )
 }

@@ -1,10 +1,9 @@
 package com.example.baremoeurofitpablomolina.navigation
 
-import android.content.Context
+
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -16,15 +15,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
-import androidx.navigation.compose.rememberNavController
-import androidx.room.Room
-import com.example.baremoeurofitpablomolina.AppDatabase
-import com.example.baremoeurofitpablomolina.Usuario
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(navigateToHome: () -> Unit) {
@@ -52,6 +43,7 @@ fun LoginScreen(navigateToHome: () -> Unit) {
 
         Button(onClick = {
             if (validateUser(email, password)) {
+                navigateToHome()
             } else {
                 errorMessage = "Credenciales incorrectas"
             }

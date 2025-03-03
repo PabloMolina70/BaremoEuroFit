@@ -1,6 +1,7 @@
 package com.example.baremoeurofitpablomolina.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -15,19 +16,10 @@ fun NavigationWrape() {
             LoginScreen(navigateToHome = { navControler.navigate(Home) })
         }
         composable<Home> {
-            HomeScreen { name -> navControler.navigate(Detail(name = name)) }
+            HomeScreen (navigateToRecicler = { navControler.navigate(Recicler) })
         }
-        composable<Detail> { backStackEntry ->
-            val detail: Detail = backStackEntry.toRoute()
-            DetailScreen(
-                detail.name,
-                navigateToBack = { navControler.navigateUp() },
-                navigateToLogin = {
-                    navControler.navigate(Login) {
-                        popUpTo<Login> { inclusive = true }
-                    }
-                }
-            )
+        composable<Recicler> {
+             ReciclerViewScreen(navControler)
         }
     }
 }
