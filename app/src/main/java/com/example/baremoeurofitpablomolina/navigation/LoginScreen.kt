@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun LoginScreen(navigateToHome: () -> Unit) {
+fun LoginScreen(navigateToData: () -> Unit) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf("") }
@@ -43,7 +43,7 @@ fun LoginScreen(navigateToHome: () -> Unit) {
 
         Button(onClick = {
             if (validateUser(email, password)) {
-                navigateToHome()
+                navigateToData()
             } else {
                 errorMessage = "Credenciales incorrectas"
             }

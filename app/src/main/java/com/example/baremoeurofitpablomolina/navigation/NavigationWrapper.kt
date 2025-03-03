@@ -16,10 +16,10 @@ fun NavigationWrape() {
     val navControler = rememberNavController()
     NavHost(navController = navControler, startDestination = Login) {
         composable<Login> {
-            LoginScreen(navigateToHome = { navControler.navigate(Home) })
+            LoginScreen(navigateToData = { navControler.navigate(Data) })
         }
-        composable<Home> {
-            HomeScreen (navigateToRecicler = { navControler.navigate(Recicler) })
+        composable<Data> {
+            DataScreen (navigateToRecicler = { navControler.navigate(Recicler) })
         }
         composable<Recicler> {
              ReciclerViewScreen(navControler)
